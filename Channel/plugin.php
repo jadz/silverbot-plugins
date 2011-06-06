@@ -5,12 +5,11 @@ class Channel extends SilverBotPlugin {
 	public $channels = array();
 	
 	public function onConnect() {
-		foreach ($this->config['channels'] as $channel)
+		foreach ($this->config['autojoin'] as $channel)
 			$this->join($channel);
 	}
 	
 	public function pub_join($data) {
-		print_r($data);
 		if ($this->bot->Auth->hasAccess($data['user_host']) && substr($data['data'], 0, 1) == '#') {
 			$this->join($data['data']);
 		}
