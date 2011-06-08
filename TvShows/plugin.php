@@ -63,9 +63,4 @@ final class TvShows extends SilverBotPlugin
     {
         return 'http://pipes.yahoo.com/pipes/pipe.run?_id=e4cedb7b326c7d843f4779dcd86f4efb&_render=json';
     }
-
-    protected function _getRSSEpisode()
-    {
-        return 'http://pipes.yahoo.com/pipes/pipe.run?_id=890ba68d660c1d840aeffcae580d426b&_render=json&textinput1=';
-    }
 }

@@ -80,10 +80,5 @@ final class Quotes extends SilverBotPlugin
     {
         return 8;
     }
-
-    protected function getDataDirectory()
-    {
-        return parent::getDataDirectory() . 'Quotes/';
-    }
 }
 ?>

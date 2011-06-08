@@ -62,11 +62,4 @@ final class Faces extends SilverBotPlugin
 		$url = 'http://tinyurl.com/api-create.php?url=' . $url;
 		return file_get_contents($url);
 	}
-
-    protected function getDataDirectory()
-    {
-        return parent::getDataDirectory() . 'Faces/';
-    }
-
-
 }
