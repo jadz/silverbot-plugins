@@ -118,7 +118,7 @@ class BestOfBorgnana extends SilverBotPlugin
     {
         $connection = $this->_getConnection();
 
-        $lastmentionFile = $this->getDataDirectory('lastmention.txt');
+        $lastmentionFile = $this->getDataDirectory() .'lastmention.txt';
         $this->_lastId = file_get_contents($lastmentionFile);
         $since = empty($this->_lastId) ? array() : array('since_id' => $this->_lastId);
 
