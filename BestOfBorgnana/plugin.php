@@ -110,7 +110,10 @@ class BestOfBorgnana extends SilverBotPlugin
         if($username == $this->config['username']) {
             $text = $data['text'];
             $this->_reply = false;
+            $replyTo = $this->_messages[0]['replyTo'];
+            //echo 'Tweet would be: @' . $replyTo . ' ' . $text;
             $this->_tweetIt('@' . $this->_replyTo . ' ' . $text);
+            array_shift($this->_messages);
         }
     }
 
@@ -120,18 +123,30 @@ class BestOfBorgnana extends SilverBotPlugin
 
         $lastmentionFile = $this->getDataDirectory() .'lastmention.txt';
         $this->_lastId = (string)file_get_contents($lastmentionFile);
+        $this->_lastId = (string)$this->_lastId;
         $since = empty($this->_lastId) ? array() : array('since_id' => $this->_lastId);
 
         $content = $connection->get('statuses/mentions', $since);
         if(is_array($content)) {
+            $messages = array();
             foreach($content as $c) {
-                $this->_lastId  = (string)$c->id;
-                $this->_replyTo = $c->user->screen_name;
-                $srch = array('@'. $this->config['username'], $this->config['username']);
-                $txt  = str_replace($srch, '', $c->text);
-                $this->bot->pm($this->config['username'], $txt);
+                $srch  = array('@'. $this->config['username'], $this->config['username']);
+                $text  = str_replace($srch, '', $c->text);
+
+                $messages[] =
+                array(
+                    'lastId'  => (string)$c->id,
+                    'replyTo' => $c->user->screen_name,
+                    'text'    => $text,
+                );
             }
-            file_put_contents($lastmentionFile, (string)$this->_lastId);
+            $this->_messages = $messages;
+            foreach($this->_messages as $m) {
+                $this->bot->pm($this->config['username'], $m['text']);
+            }
+            if(count($this->_messages) > 0)
+                file_put_contents($lastmentionFile, (string)$this->_messages[0]['lastId']);
+
         }
         return;
     }
